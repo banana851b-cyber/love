@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>สุขสันต์วันครบรอบ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mali:wght@500;600;700&family=Sarabun:wght@400;600&display=swap">
+<style>
+:root{--bg:#ffd9e3;--ink:#6b1531;--soft:#a02d58;--btn:#e8386d;--btn-ink:#ffffff;--ghost:#ff8fb0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#3a1424;--ink:#ffe3ec;--soft:#f0aabf;--btn:#ff6b97;--btn-ink:#3a0b1b;--ghost:#a8506c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#3a1424;--ink:#ffe3ec;--soft:#f0aabf;--btn:#ff6b97;--btn-ink:#3a0b1b;--ghost:#a8506c;color-scheme:dark}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Sarabun",system-ui,sans-serif;overflow:hidden}
+main{height:100%;display:flex;flex-direction:column;justify-content:center;padding:6vw;box-sizing:border-box;max-width:960px;margin:0 auto}
+h1{font-family:"Mali","Sarabun",sans-serif;font-weight:700;font-size:clamp(56px,17vw,168px);line-height:1.05;margin:0 0 .25em;letter-spacing:-.01em}
+p{font-size:clamp(18px,2.6vw,24px);line-height:1.6;color:var(--soft);margin:0 0 2rem;max-width:30ch}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+button{font:600 clamp(18px,2.4vw,22px) "Sarabun",sans-serif;border:0;border-radius:999px;padding:16px 36px;cursor:pointer;min-height:52px}
+#yes{background:var(--btn);color:var(--btn-ink);box-shadow:0 6px 0 rgba(0,0,0,.18);transform-origin:left center;transition:transform .25s}
+#no{background:transparent;color:var(--soft);border:2px solid var(--ghost);position:relative;transition:left .2s,top .2s}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.heart{position:absolute;right:-8vw;bottom:-10vw;width:min(70vw,620px);color:var(--ghost);opacity:.4;pointer-events:none;animation:beat 1.6s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@media (prefers-reduced-motion:reduce){.heart,.mascot{animation:none}.float{display:none}#yes,#no{transition:none}}
+input{font:600 clamp(22px,4vw,32px) "Sarabun",sans-serif;letter-spacing:.25em;text-align:center;width:min(100%,11em);box-sizing:border-box;padding:14px 18px;border-radius:999px;border:2px solid var(--ghost);background:transparent;color:var(--ink)}
+input::placeholder{color:var(--ghost);letter-spacing:.25em}
+input:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.mascot{display:inline-block;font-size:clamp(48px,12vw,88px);line-height:1;animation:hop 1.4s ease-in-out infinite}
+@keyframes hop{50%{transform:translateY(-12px)}}
+.float{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.float span{position:absolute;bottom:-40px;font-size:26px;animation:up 10s linear infinite}
+@keyframes up{to{transform:translateY(-110vh) rotate(20deg)}}
+#err{min-height:1.6em;margin:1rem 0 0;font-weight:600;color:var(--ink)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 21s-8-5.2-8-11.2A4.8 4.8 0 0 1 12 7a4.8 4.8 0 0 1 8 2.8C20 15.8 12 21 12 21z"/></svg>
+<div class="float" aria-hidden="true"><span style="left:8%;animation-delay:0s">💕</span><span style="left:28%;animation-delay:-3s">🌸</span><span style="left:50%;animation-delay:-6s">💗</span><span style="left:72%;animation-delay:-2s">🌷</span><span style="left:90%;animation-delay:-7s">💖</span></div>
+<main>
+  <section id="gate">
+    <div class="mascot">🐷</div>
+    <center><h1>ใส่รหัส</h1></center>
+    <p>วันสำคัญของเรา 8 หลัก</p>
+    <div class="row">
+      <input id="code" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="••••••••" aria-label="รหัส 8 หลัก">
+      <button id="go">เข้าเลย</button>
+    </div>
+    <p id="err" role="alert"></p>
+  </section>
+  <section id="ask" hidden>
+    <div class="mascot">🐷💕</div>
+    <h1>ครบรอบ<br>แล้วนะ</h1>
+    <p>ขอบคุณที่อยู่ด้วยกันมา อยู่ด้วยกันอีกปีนะ?</p>
+    <div class="row">
+      <button id="yes">ตกลงจ้า 💖</button>
+      <button id="no">ไม่</button>
+    </div>
+  </section>
+  <section id="done" hidden>
+    <div class="mascot">🥰</div>
+    <h1>รักนะขอบคุณ</h1>
+    <p>สุขสันต์วันครบรอบ ขอให้มีวันดี ๆ ด้วยกันอีกเยอะ ๆ</p>
+  </section>
+</main>
+<script>
+var code=document.getElementById('code'),err=document.getElementById('err');
+function check(){
+  if(code.value==='05052026'){
+    document.getElementById('gate').hidden=true;
+    document.getElementById('ask').hidden=false;
+  }else{
+    err.textContent='ไม่ถูกหมูอ้วนแพท';
+    code.value='';code.focus();
+  }
+}
+document.getElementById('go').addEventListener('click',check);
+code.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+var yes=document.getElementById('yes'),no=document.getElementById('no'),n=0;
+var labels=['ไม่','คิดดี ๆ นะ','ลองใหม่อีกที','ปุ่มนี้กดไม่ติดหรอก'];
+function dodge(e){
+  if(e&&e.cancelable)e.preventDefault();
+  n++;
+  var r=no.getBoundingClientRect(),w=r.width,h=r.height;
+  no.style.position='fixed';
+  no.style.left=Math.max(12,Math.random()*(innerWidth-w-24))+'px';
+  no.style.top=Math.max(12,Math.random()*(innerHeight-h-24))+'px';
+  no.textContent=labels[Math.min(n,labels.length-1)];
+  yes.style.transform='scale('+Math.min(1+n*0.12,1.8)+')';
+}
+no.addEventListener('pointerenter',dodge);
+no.addEventListener('pointerdown',dodge);
+no.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' ')dodge(e)});
+yes.addEventListener('click',function(){
+  document.getElementById('ask').hidden=true;
+  document.getElementById('done').hidden=false;
+  no.hidden=true;
+});
+</script>
+</body>
+</html>
